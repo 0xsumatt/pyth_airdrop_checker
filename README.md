@@ -1,0 +1,1 @@
+# pyth_airdrop_checker
