@@ -12,7 +12,7 @@ async def read_csv(filename):
         await asyncio.gather(*tasks)
 
 def write_csv(address, tokens):
-   with open('eligible_addresses.csv', 'a', newline='') as eligible_file:
+    with open('eligible_addresses.csv', 'a', newline='') as eligible_file:
         csv_writer = csv.writer(eligible_file)
         csv_writer.writerow([address, tokens])
 
