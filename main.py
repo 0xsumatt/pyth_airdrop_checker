@@ -11,6 +11,14 @@ async def read_csv(filename):
             tasks.append(fetch_status(wallet_address))
         await asyncio.gather(*tasks)
 
+def write_csv(address, tokens):
+    # Open the eligible_addresses.csv for appending
+    with open('eligible_addresses.csv', 'a', newline='') as eligible_file:
+        # Define the CSV writer
+        csv_writer = csv.writer(eligible_file)
+        # Write the address and tokens
+        csv_writer.writerow([address, tokens])
+
 async def fetch_status(wallet_address):
     async with httpx.AsyncClient() as client:
         if "0x" in wallet_address:
@@ -23,7 +31,12 @@ async def fetch_status(wallet_address):
         if 'error' in json_resp:
             print(f"address not eligible: {wallet_address}")
         else:
-            print(f"{wallet_address}: eligible for {int(json_resp['amount'])/1000000} tokens")
+            tokens = int(json_resp['amount'])/1000000
+            print(f"{wallet_address}: eligible for {tokens} tokens")
+            write_csv(wallet_address, tokens)
 
 if __name__ == "__main__":
-   asyncio.run(read_csv("wallets.csv"))
+    with open('eligible_addresses.csv', 'w', newline='') as eligible_file:
+        csv_writer = csv.writer(eligible_file)
+        csv_writer.writerow(['address', 'tokens'])
+    asyncio.run(read_csv("wallets.csv"))
