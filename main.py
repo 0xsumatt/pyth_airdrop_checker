@@ -12,11 +12,8 @@ async def read_csv(filename):
         await asyncio.gather(*tasks)
 
 def write_csv(address, tokens):
-    # Open the eligible_addresses.csv for appending
-    with open('eligible_addresses.csv', 'a', newline='') as eligible_file:
-        # Define the CSV writer
+   with open('eligible_addresses.csv', 'a', newline='') as eligible_file:
         csv_writer = csv.writer(eligible_file)
-        # Write the address and tokens
         csv_writer.writerow([address, tokens])
 
 async def fetch_status(wallet_address):
